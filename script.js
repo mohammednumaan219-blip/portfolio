@@ -1,63 +1,61 @@
-// Dark Mode Toggle
-const themeBtn = document.getElementById("theme-btn");
+const text = [
+    "Cyber Security Engineer",
+    "Ethical Hacker",
+    "Web Developer",
+    "Student at SSMRV College"
+];
 
-themeBtn.addEventListener("click", () => {
-    document.body.classList.toggle("dark");
+let textIndex = 0;
+let charIndex = 0;
 
-    const icon = themeBtn.querySelector("i");
+const typing = document.getElementById("typing");
 
-    if (document.body.classList.contains("dark")) {
-        icon.classList.remove("fa-moon");
-        icon.classList.add("fa-sun");
-    } else {
-        icon.classList.remove("fa-sun");
-        icon.classList.add("fa-moon");
+function typeEffect(){
+
+    if(charIndex < text[textIndex].length){
+
+        typing.textContent += text[textIndex].charAt(charIndex);
+
+        charIndex++;
+
+        setTimeout(typeEffect,100);
+
     }
-});
 
-// Hire Me Button
-const hireBtn = document.getElementById("hire-btn");
+    else{
 
-hireBtn.addEventListener("click", () => {
-    alert("Thank you for your interest! Feel free to contact me.");
-});
+        setTimeout(eraseEffect,1500);
 
-// Smooth Navigation (optional)
-document.querySelectorAll("nav a").forEach(link => {
-    link.addEventListener("click", function (e) {
-        e.preventDefault();
+    }
 
-        const targetId = this.getAttribute("href");
-        const targetSection = document.querySelector(targetId);
+}
 
-        window.scrollTo({
-            top: targetSection.offsetTop - 70,
-            behavior: "smooth"
-        });
-    });
-});
+function eraseEffect(){
 
-// Highlight Active Navigation Link
-const sections = document.querySelectorAll("section");
-const navLinks = document.querySelectorAll("nav a");
+    if(charIndex > 0){
 
-window.addEventListener("scroll", () => {
-    let current = "";
+        typing.textContent=text[textIndex].substring(0,charIndex-1);
 
-    sections.forEach(section => {
-        const sectionTop = section.offsetTop - 100;
-        const sectionHeight = section.clientHeight;
+        charIndex--;
 
-        if (window.scrollY >= sectionTop) {
-            current = section.getAttribute("id");
+        setTimeout(eraseEffect,50);
+
+    }
+
+    else{
+
+        textIndex++;
+
+        if(textIndex>=text.length){
+
+            textIndex=0;
+
         }
-    });
 
-    navLinks.forEach(link => {
-        link.classList.remove("active");
+        setTimeout(typeEffect,500);
 
-        if (link.getAttribute("href") === `#${current}`) {
-            link.classList.add("active");
-        }
-    });
-});
+    }
+
+}
+
+typeEffect();
